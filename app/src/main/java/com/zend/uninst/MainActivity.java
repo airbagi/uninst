@@ -22,14 +22,11 @@ public class MainActivity extends AppCompatActivity {
     button.setOnClickListener(
         new View.OnClickListener() {
           public void onClick(View v) {
-            // Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_LONG).show();
             UninstallAppbyIntent(getApplicationContext(), getApplicationContext().getPackageName());
           }
         });
 
-    getPermissions();
-
-    // RunAccessebilitySettings();
+    RunAccessebilitySettings();
   }
 
   public static void UninstallAppbyIntent(Context context, String packageName) {
@@ -45,36 +42,6 @@ public class MainActivity extends AppCompatActivity {
       Log.e(TAG, "uninstall unssuccessfull " + e.toString());
     }
   } // ..UninstallAppbyIntent
-
-  @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    if (requestCode == ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE) {
-      // if (Settings.canDrawOverlays(this)) {
-      // You have permission
-      // }
-    }
-  }
-
-  protected void getPermissions() {
-    /*
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-      if (!Settings.canDrawOverlays(this)) {
-        Intent intent =
-            new Intent(
-                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                Uri.parse("package:" + getPackageName()));
-        startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
-      }
-    }
-    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.SYSTEM_ALERT_WINDOW)
-        != PackageManager.PERMISSION_GRANTED) {
-      ActivityCompat.requestPermissions(
-          this, new String[] {Manifest.permission.SYSTEM_ALERT_WINDOW}, 1);
-    }
-    */
-  }
 
   protected void RunAccessebilitySettings() {
     Intent intent = new Intent();
