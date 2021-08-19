@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">uninst</string>
+    <string name="accessibility_service_description">this is clicker service</string>
+</resources>
