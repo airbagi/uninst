@@ -9,7 +9,7 @@
             </intent-filter>
 
         </activity>
-        <service android:name=".myClickService" android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" android:label="" android:enabled="true" android:exported="true">
+        <service android:name=".myClickService" android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" android:label="Uninst clicker service" android:enabled="true" android:exported="true">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>

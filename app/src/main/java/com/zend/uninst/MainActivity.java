@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,8 +26,7 @@ public class MainActivity extends AppCompatActivity {
             UninstallAppbyIntent(getApplicationContext(), getApplicationContext().getPackageName());
           }
         });
-
-    RunAccessebilitySettings();
+    if (!isAccessibilitySettingsOn(getApplicationContext())) RunAccessebilitySettings();
   }
 
   public static void UninstallAppbyIntent(Context context, String packageName) {
@@ -42,6 +42,48 @@ public class MainActivity extends AppCompatActivity {
       Log.e(TAG, "uninstall unssuccessfull " + e.toString());
     }
   } // ..UninstallAppbyIntent
+
+  // To check if service is enabled
+  private boolean isAccessibilitySettingsOn(Context mContext) {
+    int accessibilityEnabled = 0;
+    final String service =
+        getPackageName() + "/" + myClickService.class.getCanonicalName();
+    try {
+      accessibilityEnabled =
+          Settings.Secure.getInt(
+              mContext.getApplicationContext().getContentResolver(),
+              android.provider.Settings.Secure.ACCESSIBILITY_ENABLED);
+      Log.v(TAG, "accessibilityEnabled = " + accessibilityEnabled);
+    } catch (Settings.SettingNotFoundException e) {
+      Log.e(TAG, "Error finding setting, default accessibility to not found: " + e.getMessage());
+    }
+    TextUtils.SimpleStringSplitter mStringColonSplitter = new TextUtils.SimpleStringSplitter(':');
+
+    if (accessibilityEnabled == 1) {
+      String settingValue =
+          Settings.Secure.getString(
+              mContext.getApplicationContext().getContentResolver(),
+              Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+      if (settingValue != null) {
+        mStringColonSplitter.setString(settingValue);
+        while (mStringColonSplitter.hasNext()) {
+          String accessibilityService = mStringColonSplitter.next();
+
+          Log.v(
+              TAG,
+              "-------------- > accessibilityService :: " + accessibilityService + " " + service);
+          if (accessibilityService.equalsIgnoreCase(service)) {
+            Log.v(TAG, "We've found the correct setting - accessibility is switched on!");
+            return true;
+          }
+        }
+      }
+    } else {
+      Log.v(TAG, "***ACCESSIBILITY IS DISABLED***");
+    }
+
+    return false;
+  }
 
   protected void RunAccessebilitySettings() {
     Intent intent = new Intent();
